@@ -19,6 +19,14 @@ Vagrant.configure("2") do |config|
 
   # provision both vms
   config.vm.provision "shell", inline: <<-SHELL
-  sudo apt-get update && sudo apt-get upgrade -y
+  sudo apt-get update
+
+  # Turn off restart of services - Change line 38 from "#$nrconf{restart} = 'i';" to "#$nrconf{restart} = 'a';"
+  sudo apt-get install -y needrestart
+  sudo sed -i "38s/#\\$nrconf{restart} = 'i';/#\\$nrconf{restart} = 'a';/" /etc/needrestart/needrestart.conf
+
+  # Provision LAMP stack bash script in user directory
+  cp /vagrant/deploy-LAMP-stack.sh /home/vagrant
+  chmod +x /home/vagrant/deploy-LAMP-stack.sh
   SHELL
 end
