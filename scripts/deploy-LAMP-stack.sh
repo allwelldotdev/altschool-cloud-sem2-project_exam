@@ -16,19 +16,26 @@ trap 'error_handling $LINENO' ERR
 # -------------------------------------------
 
 
-# Get user input for variables
-
-# User input for DBNAME - Database Name
-read -s -p "Enter the name of the Laravel Database (e.g. lavarel_db) NB. It doesn't have to be the same as the example \"e.g.\" : " DBNAME
-
-# User input for DBNAME - Database Username
+# Source the 'deploy-LAMP-stack.cfg' configuration file
 echo -e "\n###################################################"
-read -s -p "Enter the username of the Laravel Database (e.g. lavarel_user) NB. It doesn't have to be the same as the example \"e.g.\" : " DBUSER
+echo "Sourcing 'deploy-LAMP-stack.cfg' configuration file..."
+sleep 2
 
-# User input for DBNAME - Database Password
-echo -e "\n###################################################"
-read -s -p "Enter the password of the Laravel Database (e.g. lavarel_pass) NB. It doesn't have to be the same as the example \"e.g.\" : " DBPASS
-echo -e "\n###################################################"
+# Define path to the configuration file
+CONFIG_FILE="$HOME/deploy-LAMP-stack.cfg"
+
+# Check if the file exists, then source file, or exit script
+if [[ -f "$CONFIG_FILE" ]]; then
+    # Source configuration file
+    source $HOME/deploy-LAMP-stack.cfg
+    echo "Configuration file loaded successfully..."
+    echo -e "\n###################################################"
+else
+    echo "Configuration file does not exist in user's home directory"
+    echo "Add configuration file 'deploy-LAMP-stack.cfg' to user's home directory - /home/user/"
+    echo -e "\n###################################################"
+    exit 1 # Exit the script with an exit/return status of 1 indicating an error
+fi
 
 
 # Ensure no interactive prompt during installation
@@ -161,11 +168,11 @@ sudo composer install --no-interaction --prefer-dist --optimize-autoloader --wor
 #sudo composer update --no-interaction --prefer-dist --optimize-autoloader --working-dir=/var/www/html/laravel
 
 # Set permissions for Laravel
-echo -e "\n###################################################"
-echo "Setting permissions for Laravel..."
-echo -e "\n###################################################"
+#echo -e "\n###################################################"
+#echo "Setting permissions for Laravel..."
+#echo -e "\n###################################################"
 
-sudo chown -R www-data:www-data /var/www/html/laravel
+#sudo chown -R www-data:www-data /var/www/html/laravel
 #sudo find /var/www/html/laravel -type d -exec chmod 755 {} \;
 #sudo find /var/www/html/laravel -type f -exec chmod 644 {} \;
 
@@ -183,7 +190,7 @@ MYSQL_SCRIPT
 
 # Set proper permissions for storage and bootstrap cache directories
 echo -e "\n###################################################"
-echo "Setting permissions for storage and bootstrap cache directories..."
+echo "Setting permissions for Laravel, storage and bootstrap cache directories..."
 echo -e "\n###################################################"
 
 sudo chown -R www-data:www-data /var/www/html/laravel

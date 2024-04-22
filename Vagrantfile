@@ -26,6 +26,7 @@ Vagrant.configure("2") do |config|
   sudo sed -i "38s/#\\$nrconf{restart} = 'i';/#\\$nrconf{restart} = 'a';/" /etc/needrestart/needrestart.conf
 
   # Provision LAMP stack bash script in user directory
+  cp /vagrant/scripts/deploy-LAMP-stack.cfg /home/vagrant
   cp /vagrant/scripts/deploy-LAMP-stack.sh /home/vagrant
   chmod +x /home/vagrant/deploy-LAMP-stack.sh
   SHELL
