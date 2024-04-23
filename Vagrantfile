@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
     # provision master vm
     master.vm.provision "shell", inline: <<-SHELL
 
-    # Provision LAMP stack bash script in user directory
+    # Provision LAMP stack bash script into user directory
     sudo -u vagrant cp /vagrant/assets/config/deploy-LAMP-stack.cfg /home/vagrant
     sudo -u vagrant cp /vagrant/scripts/deploy-LAMP-stack.sh /home/vagrant
     sudo -u vagrant chmod +x /home/vagrant/deploy-LAMP-stack.sh
@@ -25,6 +25,9 @@ Vagrant.configure("2") do |config|
     sudo mv ansible.cfg ansible.cfg_backup
     sudo ansible-config init --disabled -t all > ansible.cfg
     sudo sed -i "s/^;host_key_checking=True/host_key_checking=False/" /etc/ansible/ansible.cfg # Stop Ansible from interaction during ssh login - improve automation process
+
+    # Provision Ansible files into user directory
+    sudo -u vagrant cp -r /vagrant/scripts/ansible /home/vagrant
     SHELL
 
     # provision master vm: Generate SSH key-pair
