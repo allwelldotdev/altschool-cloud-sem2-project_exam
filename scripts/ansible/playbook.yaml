@@ -1,0 +1,37 @@
+---
+- name: Deploy LAMP stack/Laravel application and set cron job on Slave node
+  hosts: slave
+
+  tasks:
+    - name: Transfer Master VM bash script to Slave node
+      copy:
+        src: /home/vagrant/deploy-LAMP-stack.sh
+        dest: /home/vagrant/deploy-LAMP-stack.sh
+        mode: "0755"
+
+    - name: Transfer Master VM config file to Slave node
+      copy:
+        src: /home/vagrant/deploy-LAMP-stack.cfg
+        dest: /home/vagrant/deploy-LAMP-stack.cfg
+        mode: "0755"
+
+    - name: Execute Master VM bash script on Slave node
+      command: ./deploy-LAMP-stack.sh
+      args:
+        chdir: /home/vagrant
+
+    - name: Check if the Laravel application is up and running
+      uri:
+        url: http://192.168.56.11
+        return_content: yes
+      register: webpage
+      until: webpage.status == 200
+      retries: 5
+      delay: 10
+
+    - name: Set cron job to check server uptime
+      cron:
+        name: "Check uptime"
+        minute: "0"
+        hour: "0"
+        job: "uptime >> /var/log/uptime.log"
