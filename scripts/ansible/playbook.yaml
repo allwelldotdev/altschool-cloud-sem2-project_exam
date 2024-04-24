@@ -15,6 +15,11 @@
         dest: /home/vagrant/deploy-LAMP-stack.cfg
         mode: "0755"
 
+    - name: Remove Windows line endings from bash script
+      command: sed -i 's/\r$//' deploy-LAMP-stack.sh
+      args:
+        chdir: /home/vagrant
+
     - name: Execute Master VM bash script on Slave node
       command: ./deploy-LAMP-stack.sh
       args:

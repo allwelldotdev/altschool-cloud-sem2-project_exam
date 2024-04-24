@@ -17,6 +17,7 @@ Vagrant.configure("2") do |config|
     sudo -u vagrant cp /vagrant/assets/config/deploy-LAMP-stack.cfg /home/vagrant
     sudo -u vagrant cp /vagrant/scripts/deploy-LAMP-stack.sh /home/vagrant
     sudo -u vagrant chmod +x /home/vagrant/deploy-LAMP-stack.sh
+    sudo -u vagrant sed -i 's/\r$//' /home/vagrant/deploy-LAMP-stack.sh # remove Windows carriage returns (CR) - Ensure script runs on Linux VM
     
     # Install and configure Ansible
     sudo add-apt-repository --yes --update ppa:ansible/ansible

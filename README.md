@@ -38,9 +38,13 @@ The bash script sources/calls the variables from the config file into itself and
 
 Created [Ansible playbook](/scripts/ansible/playbook.yaml) to execute bash script on Slave node, ran it, and it ran successfully. See the images below for proof.
 
+**UPDATE:** I discovered, when I tried cloning my project repo from GitHub and executing my Ansible playbook, that my bash script wouldn't run. I found that the problem was Windows line endings [or carriage returns (CR)] not working on Unix-like systems. So, I updated the Master VM provisioning and Ansible playbook to solve this problem and eliminate the bug.
+Now, if you clone my repo into your local machine and run my code it would work 'on your machine'.
+See new Ansible playbook execution result below.
+
 `Ansible playbook ran successfully`
 
-![Ansible playbook run](/assets/media/ansible-playbook-run.png)
+![Ansible playbook run](/assets/media/ansible-playbook-run-2.png)
 
 Verified that PHP Laravel application is accessible through Slave VM's IP address: 192.168.56.11
 
